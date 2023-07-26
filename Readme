@@ -1,0 +1,191 @@
+1. Create a new folder for the Project
+
+
+
+
+   `mkdir go-gqlgen`
+
+
+
+
+2. Mod init your project, give it whatever name you like
+
+
+
+
+   `go mod init go-gqlgen`
+
+
+
+
+3. Get gql gen for your project
+
+
+
+
+   `go get github.com/99designs/gqlgen`
+
+
+
+
+4. Add gqlgen to tools.go
+
+
+
+
+   `printf '// +build tools\npackage tools\nimport _ "github.com/99designs/gqlgen"' | gofmt > tools.go`
+
+
+
+
+5. Get all the dependencies
+
+
+
+
+   `go mod tidy`
+
+
+
+
+6. Initialize your project
+
+
+
+
+   `go run github.com/99designs/gqlgen init`
+
+
+
+
+7. After you've written the graphql schema, run this - `go run github.com/99designs/gqlgen generate`
+
+
+
+
+8. To run the project - `go run ./server.go`
+
+
+
+
+9. to autoRestart the server - `run command - fresh` if the binaries were installed
+
+
+
+how to use this
+ we are providing the graph ql request with variable value
+ 
+
+1.
+
+ mutation createBookListing($book: NewBookListing!)
+{
+  createBookListing(input: $book) {
+    id
+    title
+    bookname
+    description
+    author
+    
+  }
+}
+
+
+
+{
+  "book": {
+    "title":"shre krishna",
+    "bookname": "mahabharat",
+    "description": "Read carefully",
+    "author": "rk"
+    
+  }
+}
+
+
+2
+
+query GetBookByID($id: ID!) {
+  bookbyId(id: $id) {
+    id
+    title
+    author
+    description
+    bookname
+    addedOn
+    # Add other fields you want to retrieve
+  }
+}
+
+
+{
+  "id": "64c0d6cf484f7e6d6702cbbb"
+}
+
+3
+query GetBooks() {
+  books() {
+    id
+    title
+    author
+    description
+    addedOn
+    # Add other fields you want to retrieve
+  }
+}
+
+4.
+mutation UpdateBook($id: ID!, $input: UpdateBookListing!) {
+  UpdateBooks(id: $id, input: $input) {
+    id
+    title
+    bookname
+    author
+    description
+    addedOn
+    # Add other fields accordingly
+  }
+}
+
+
+{
+  "id": "64c0d6cf484f7e6d6702cbbb",
+  "input": {
+    "bookname": "sandip",
+    "description" : "the story of goa",
+    "author": "rk"
+    
+  }
+}
+
+
+5.
+query GetBooksByAuthor($author: String!) {
+  bookbyauthor(author: $author) {
+    id
+    title
+    author
+    description
+    addedOn
+    # Add other fields if needed
+  }
+}
+
+
+{
+  "author": "rk"
+}
+
+
+
+
+6.
+mutation DeleteBook($id: ID!) {
+  deleteBookById(id: $id) {
+    DeletedBookID
+  }
+}
+
+{
+  "id": "64c0d6cf484f7e6d6702cbbb"
+}
